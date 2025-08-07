@@ -9,3 +9,55 @@ print("Variable CaPiTaL is $CaPiTaL");
 OUTPUT:
 
 === Code Execution Successful ===
+
+ANSWER02
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Division Table</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h3>Division Table</h3>
+<table>
+    <tr>
+        <th></th>
+        <?php
+        // Column headers
+        for ($col = 1; $col <= 3; $col++) {
+            echo "<th>$col</th>";
+        }
+        ?>
+    </tr>
+
+    <?php
+    // Rows
+    for ($row = 1; $row <= 3; $row++) {
+        echo "<tr>";
+        echo "<th>$row</th>"; // Row header
+
+        for ($col = 1; $col <= 3; $col++) {
+            $result = $row / $col;
+            echo "<td>" . round($result, 2) . "</td>";
+        }
+
+        echo "</tr>";
+    }
+    ?>
+</table>
+
+</body>
+</html>
+
+
+OUTPUT:
+
+=== Code Execution Successful ===
