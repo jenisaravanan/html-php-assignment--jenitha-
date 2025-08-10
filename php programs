@@ -61,3 +61,25 @@ ANSWER02
 OUTPUT:
 
 === Code Execution Successful ===
+
+
+Answer : 4
+
+$animal = "antelope";
+$animal_heads = 1;
+$animal_legs = 4;
+echo "The $animal has $animal_heads head(s).";
+echo "The $animal has $animal_legs leg(s).";
+
+
+OUTPUT:
+
+
+$animal = "antelope";
+$animal_heads = 1;
+$animal_legs = 4;
+echo "The $animal has $animal_heads head(s).";
+echo "The $animal has $animal_legs leg(s).";
+
+
+=== Code Execution Successful ===
