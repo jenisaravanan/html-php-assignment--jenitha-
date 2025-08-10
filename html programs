@@ -278,3 +278,19 @@ footer {
 </html>
 
 === Code Execution Successful ===
+
+ANSWER : 6
+
+
+Html
+
+<a href="page2.php?username=alice&age=25">Go to Page 2</a>
+
+
+OUTPUT :
+
+<a href="page2.php?username=alice&age=25">Go to Page 2</a>
+
+
+=== Code Execution Successful ===
+
