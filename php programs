@@ -445,5 +445,216 @@ sub is 34
 === Code Execution Successful ===
 
 
+ANSWER : 14
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — Form with Inline Confirmation</title>
+  <style>
+    :root {
+      --maxw: 520px;
+      --radius: 10px;
+      --gap: 14px;
+      --muted: #6b7280;
+    }
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(180deg,#f7fafc,#fff);
+      padding: 24px;
+    }
+    .card {
+      width: 100%;
+      max-width: var(--maxw);
+      background: #ffffff;
+      border-radius: var(--radius);
+      box-shadow: 0 6px 24px rgba(11,22,39,0.06);
+      padding: 22px;
+      box-sizing: border-box;
+    }
+    h1 { margin: 0 0 8px 0; font-size: 1.25rem; }
+    p.lead { margin: 0 0 18px 0; color: var(--muted); font-size: 0.95rem; }
+    label { display:block; margin-top: var(--gap); font-weight: 600; font-size: 0.9rem; }
+    input[type="text"], input[type="email"], textarea {
+      width: 100%;
+      padding: 10px 12px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid #e6e9ef;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+      outline: none;
+    }
+    textarea { min-height: 110px; resize: vertical; }
+    .actions { margin-top: 16px; display:flex; gap:10px; align-items:center; }
+    button {
+      padding: 10px 14px;
+      border-radius: 9px;
+      border: none;
+      cursor: pointer;
+      background: #0f62fe;
+      color: white;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    button[disabled] { opacity: 0.6; cursor: not-allowed; }
+    .confirmation {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 8px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      display: none;
+    }
+    .error { color: #b91c1c; font-size: 0.9rem; margin-top:8px; display:none; }
+    .small { color: var(--muted); font-size: 0.9rem; margin-left: auto; }
+  </style>
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="contactTitle">
+    <h1 id="contactTitle">Contact us</h1>
+    <p class="lead">Send us a quick message — we'll show a confirmation on this page when you submit.</p>
+
+    <form id="contactForm" novalidate>
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" autocomplete="name" required />
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required />
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" required></textarea>
+
+      <div class="actions" aria-hidden="false">
+        <button id="sendBtn" type="submit">Send message</button>
+        <div class="small">All fields required</div>
+      </div>
+
+      <div id="error" class="error" role="alert"></div>
+    </form>
+
+    <div id="confirmation" class="confirmation" role="status" aria-live="polite">
+      <!-- Filled dynamically -->
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const form = document.getElementById('contactForm');
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      const messageInput = document.getElementById('message');
+      const errorDiv = document.getElementById('error');
+      const confirmationDiv = document.getElementById('confirmation');
+      const sendBtn = document.getElementById('sendBtn');
+
+      function showError(msg) {
+        errorDiv.textContent = msg;
+        errorDiv.style.display = 'block';
+        confirmationDiv.style.display = 'none';
+      }
+      function clearError() {
+        errorDiv.style.display = 'none';
+        errorDiv.textContent = '';
+      }
+
+      function sanitize(text) {
+        // minimal client-side sanitization for display (prevents raw HTML injection)
+        return text.replace(/[&<>"']/g, function (m) {
+          return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]);
+        });
+      }
+
+      form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        clearError();
+
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const message = messageInput.value.trim();
+
+        // simple client-side validation
+        if (!name || !email || !message) {
+          showError('Please fill in all fields.');
+          return;
+        }
+        // basic email format check
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          showError('Please enter a valid email address.');
+          return;
+        }
+
+        // Simulate sending — in a real app you'd POST to a server here.
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'Sending...';
+
+        // Simulate a short delay to mimic network latency.
+        setTimeout(() => {
+          // Show confirmation on the same page
+          const safeName = sanitize(name);
+          const safeEmail = sanitize(email);
+
+          confirmationDiv.innerHTML = `
+            <strong>Thanks, ${safeName} — your message was received.</strong>
+            <div style="margin-top:8px;">A confirmation was sent to <em>${safeEmail}</em>.</div>
+            <div style="margin-top:8px; color: #374151;">(Message preview: ${sanitize(message).slice(0, 200)}${message.length>200?'…':''})</div>
+            <div style="margin-top:10px;">
+              <button id="sendAnother" type="button">Send another message</button>
+            </div>
+          `;
+          confirmationDiv.style.display = 'block';
+          form.style.display = 'none';
+
+          // re-enable button in case user comes back
+          sendBtn.disabled = false;
+          sendBtn.textContent = 'Send message';
+
+          // wire up "send another"
+          document.getElementById('sendAnother').addEventListener('click', () => {
+            form.reset();
+            form.style.display = '';
+            confirmationDiv.style.display = 'none';
+            nameInput.focus();
+          });
+        }, 700);
+      });
+    })();
+  </script>
+</body>
+</html>
+
+
+ANSWER : 15
+<?php
+function sumDigitsByMath($number) {
+    $sum = 0;
+    while ($number != 0) {
+        $sum += $number % 10;
+        $number = (int)($number / 10);
+    }
+    return $sum;
+}
+
+// Example usage:
+echo sumDigitsByMath(76534); // Outputs: 25
+?>
+
+OUTPUT :
+25
+
+=== Code Execution Successful ===
+
+
+
+
+
 
 
