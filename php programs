@@ -653,6 +653,137 @@ OUTPUT :
 === Code Execution Successful ===
 
 
+ANSWER : 16
+
+<?php
+// index.php
+
+// Define a function that returns the sum of two numbers.
+// We accept floats to allow decimal input.
+function addNumbers(float $a, float $b): float {
+    return $a + $b;
+}
+
+// Initialize variables for output and preserving form values
+$result = null;
+$val1 = "";
+$val2 = "";
+
+// Check whether the form was submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Use filter_input to get POST values and validate as numbers.
+    // filter_input() returns null if the field is missing.
+    $raw1 = filter_input(INPUT_POST, 'num1', FILTER_SANITIZE_STRING);
+    $raw2 = filter_input(INPUT_POST, 'num2', FILTER_SANITIZE_STRING);
+
+    // Preserve original text for redisplay (escaped)
+    $val1 = $raw1 !== null ? htmlspecialchars($raw1, ENT_QUOTES, 'UTF-8') : "";
+    $val2 = $raw2 !== null ? htmlspecialchars($raw2, ENT_QUOTES, 'UTF-8') : "";
+
+    // Convert to float safely. If empty or non-numeric, treat as 0.0
+    // (you can change behavior to show an error instead).
+    $num1 = is_numeric($raw1) ? (float)$raw1 : 0.0;
+    $num2 = is_numeric($raw2) ? (float)$raw2 : 0.0;
+
+    // Call the function
+    $sum = addNumbers($num1, $num2);
+
+    // Format result (remove trailing .0 for integers)
+    if (floor($sum) == $sum) {
+        $result = (int)$sum;
+    } else {
+        $result = $sum;
+    }
+}
+?>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Add Two Numbers</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding: 24px; }
+    label { display:block; margin-top:8px; }
+    input[type="number"] { width:160px; padding:6px; margin-top:4px; }
+    button { margin-top:12px; padding:8px 12px; border-radius:8px; cursor:pointer; }
+    .result { margin-top:16px; font-weight:600; }
+  </style>
+</head>
+<body>
+  <h1>Add Two Numbers</h1>
+
+  <form method="post" action="">
+    <label>
+      Number 1
+      <input type="number" name="num1" step="any" value="<?php echo $val1; ?>" required>
+    </label>
+
+    <label>
+      Number 2
+      <input type="number" name="num2" step="any" value="<?php echo $val2; ?>" required>
+    </label>
+
+    <!-- Using a <button> element gives better flexibility than input[type=submit]. -->
+    <button type="submit" name="submit">Calculate Sum</button>
+  </form>
+
+  <?php if ($result !== null): ?>
+    <div class="result">Result: <?php echo htmlspecialchars((string)$result, ENT_QUOTES, 'UTF-8'); ?></div>
+  <?php endif; ?>
+
+  <p style="margin-top:18px; color:#666; font-size:90%;">
+    Notes: this example posts the form to the same page and uses a PHP function to compute the sum.
+  </p>
+</body>
+</html>
+
+
+OUTPUT : 
+Warning: Undefined array key "REQUEST_METHOD" in /tmp/UdpvwyKT92/main.php on line 16
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Add Two Numbers</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding: 24px; }
+    label { display:block; margin-top:8px; }
+    input[type="number"] { width:160px; padding:6px; margin-top:4px; }
+    button { margin-top:12px; padding:8px 12px; border-radius:8px; cursor:pointer; }
+    .result { margin-top:16px; font-weight:600; }
+  </style>
+</head>
+<body>
+  <h1>Add Two Numbers</h1>
+
+  <form method="post" action="">
+    <label>
+      Number 1
+      <input type="number" name="num1" step="any" value="" required>
+    </label>
+
+    <label>
+      Number 2
+      <input type="number" name="num2" step="any" value="" required>
+    </label>
+
+    <!-- Using a <button> element gives better flexibility than input[type=submit]. -->
+    <button type="submit" name="submit">Calculate Sum</button>
+  </form>
+
+  
+  <p style="margin-top:18px; color:#666; font-size:90%;">
+    Notes: this example posts the form to the same page and uses a PHP function to compute the sum.
+  </p>
+</body>
+</html>
+
+
+=== Code Execution Successful ===
+
+
 
 
 
