@@ -267,3 +267,40 @@ Warning: Undefined array key "REQUEST_METHOD" in /tmp/5bmMdm5lrk/main.php on lin
 
 === Code Execution Successful ===
 
+ANSWER : 8
+
+<?php
+/**
+ * Compares two drinks by their unit price and outputs which is more cost-effective.
+ *
+ * @param float $priceA Cost of Drink A.
+ * @param float $sizeA  Size (unit volume) of Drink A.
+ * @param float $priceB Cost of Drink B.
+ * @param float $sizeB  Size (unit volume) of Drink B.
+ */
+function deal($priceA, $sizeA, $priceB, $sizeB) {
+    $unitPriceA = $priceA / $sizeA;  // Cost per unit for Drink A
+    $unitPriceB = $priceB / $sizeB;  // Cost per unit for Drink B
+
+    echo "Drink A: ₹{$priceA} for {$sizeA} units → ₹" . number_format($unitPriceA, 2) . " per unit.<br>";
+    echo "Drink B: ₹{$priceB} for {$sizeB} units → ₹" . number_format($unitPriceB, 2) . " per unit.<br>";
+
+    if ($unitPriceA < $unitPriceB) {
+        echo "<strong>Drink A is the better deal—it costs less per unit.</strong>";
+    } elseif ($unitPriceB < $unitPriceA) {
+        echo "<strong>Drink B is the better deal—it costs less per unit.</strong>";
+    } else {
+        echo "<strong>Both drinks offer the same value.</strong>";
+    }
+}
+
+// Example usage
+deal(25, 11, 23, 9);
+
+
+OUTPUT : 
+
+Drink A: ₹25 for 11 units → ₹2.27 per unit.<br>Drink B: ₹23 for 9 units → ₹2.56 per unit.<br><strong>Drink A is the better deal—it costs less per unit.</strong>
+
+=== Code Execution Successful ===
+
