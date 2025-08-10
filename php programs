@@ -315,5 +315,42 @@ OUTPUT :
 
 this, ,that+2.2
 
+ANSWER : 10
+
+<?php
+// Sample marks for students
+$studentMarks = [95, 67, 45, 89, 32, 78];
+
+// Define grade thresholds
+function getGrade($marks) {
+    if ($marks >= 90) {
+        return 'A';
+    } elseif ($marks >= 80) {
+        return 'B';
+    } elseif ($marks >= 60) {
+        return 'C';
+    } elseif ($marks >= 33) {
+        return 'D';
+    } else {
+        return 'F';
+    }
+}
+
+echo "<h2>Student Grades:</h2>";
+foreach ($studentMarks as $index => $marks) {
+    $grade = getGrade($marks);
+    echo "Student " . ($index + 1) . ": Marks = $marks → Grade = <strong>$grade</strong><br>";
+}
+?>
+
+
+OUTPUT : 
+
+<h2>Student Grades:</h2>Student 1: Marks = 95 → Grade = <strong>A</strong><br>Student 2: Marks = 67 → Grade = <strong>C</strong><br>Student 3: Marks = 45 → Grade = <strong>D</strong><br>Student 4: Marks = 89 → Grade = <strong>B</strong><br>Student 5: Marks = 32 → Grade = <strong>F</strong><br>Student 6: Marks = 78 → Grade = <strong>C</strong><br>
+
+=== Code Execution Successful ===
+
+
+
 
 
