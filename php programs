@@ -184,3 +184,15 @@ Warning: Undefined array key "REQUEST_METHOD" in /tmp/nkO0jm2qfi/main.php on lin
 
 
 === Code Execution Successful ===
+
+
+ANSWER : 6
+
+
+<?php
+echo "Name: " . htmlspecialchars($_GET['username']) . "<br>";
+echo "Age: " . (int)$_GET['age'];
+
+OUTPUT :
+
+=== Code Execution Successful ===
