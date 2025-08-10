@@ -83,3 +83,104 @@ echo "The $animal has $animal_legs leg(s).";
 
 
 === Code Execution Successful ===
+
+
+Answer : 5
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Purchase Calculator</title>
+</head>
+<body>
+    <h1>Calculate Total Cost</h1>
+    <form method="post" action="">
+        <?php for ($i = 1; $i <= 3; $i++): ?>
+            <fieldset>
+                <legend>Item <?= $i ?></legend>
+                <label> Price:
+                    <input type="number" name="price<?= $i ?>" step="0.01" min="0" required>
+                </label>
+                <label> Quantity:
+                    <input type="number" name="quantity<?= $i ?>" min="0" required>
+                </label>
+            </fieldset>
+            <br>
+        <?php endfor; ?>
+        <input type="submit" value="Calculate">
+    </form>
+
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $subtotal = 0.0;
+
+        for ($i = 1; $i <= 3; $i++) {
+            $price = floatval($_POST["price{$i}"]);
+            $qty   = intval($_POST["quantity{$i}"]);
+            $subtotal += $price * $qty;
+        }
+
+        $tax = $subtotal * 0.10; // 10%
+        $total = $subtotal + $tax;
+        ?>
+        <h2>Results:</h2>
+        <p>Subtotal: ₹<?php echo number_format($subtotal, 2); ?></p>
+        <p>Tax (10%): ₹<?php echo number_format($tax, 2); ?></p>
+        <p><strong>Total Cost: ₹<?php echo number_format($total, 2); ?></strong></p>
+    <?php } ?>
+</body>
+</html>
+
+
+OUTPUT:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Purchase Calculator</title>
+</head>
+<body>
+    <h1>Calculate Total Cost</h1>
+    <form method="post" action="">
+                    <fieldset>
+                <legend>Item 1</legend>
+                <label> Price:
+                    <input type="number" name="price1" step="0.01" min="0" required>
+                </label>
+                <label> Quantity:
+                    <input type="number" name="quantity1" min="0" required>
+                </label>
+            </fieldset>
+            <br>
+                    <fieldset>
+                <legend>Item 2</legend>
+                <label> Price:
+                    <input type="number" name="price2" step="0.01" min="0" required>
+                </label>
+                <label> Quantity:
+                    <input type="number" name="quantity2" min="0" required>
+                </label>
+            </fieldset>
+            <br>
+                    <fieldset>
+                <legend>Item 3</legend>
+                <label> Price:
+                    <input type="number" name="price3" step="0.01" min="0" required>
+                </label>
+                <label> Quantity:
+                    <input type="number" name="quantity3" min="0" required>
+                </label>
+            </fieldset>
+            <br>
+                <input type="submit" value="Calculate">
+    </form>
+
+    
+Warning: Undefined array key "REQUEST_METHOD" in /tmp/nkO0jm2qfi/main.php on line 26
+</body>
+</html>
+
+
+=== Code Execution Successful ===
