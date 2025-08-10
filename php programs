@@ -393,5 +393,43 @@ Friday
 === Code Execution Successful ===
 
 
+ANSWER : 12
+
+<?php
+/**
+ * gradeEvaluator() - Returns grade string based on percentage.
+ *
+ * @param float $marks Percentage marks (0–100).
+ * @return string Grade message.
+ */
+function gradeEvaluator($marks) {
+    switch (true) {
+        case ($marks >= 75):
+            return "First Class";
+        case ($marks >= 60):
+            return "Second Class";
+        case ($marks >= 40):
+            return "Third Class";
+        default:
+            return "Fail";
+    }
+}
+
+// Example usage:
+$studentMarks = [82, 67.5, 55, 38, 92];  // Sample percentages
+foreach ($studentMarks as $index => $marks) {
+    $grade = gradeEvaluator($marks);
+    echo "Student " . ($index + 1) . ": Marks = {$marks}% → Grade = **{$grade}**<br>";
+}
+?>
+
+
+OUTPUT : 
+
+Student 1: Marks = 82% → Grade = **First Class**<br>Student 2: Marks = 67.5% → Grade = **Second Class**<br>Student 3: Marks = 55% → Grade = **Third Class**<br>Student 4: Marks = 38% → Grade = **Fail**<br>Student 5: Marks = 92% → Grade = **First Class**<br>
+
+=== Code Execution Successful ===
+
+
 
 
