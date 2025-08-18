@@ -1495,5 +1495,1314 @@ Array
     [4] => 50
 )
 
+ANSWER : 71
+
+| Mode     | Description                                                                                                    |
+| -------- | -------------------------------------------------------------------------------------------------------------- |
+| **`r`**  | Open file for **read only**. Pointer starts at the **beginning** of the file.                                  |
+| **`r+`** | Open file for **read and write**. Pointer starts at the **beginning** of the file.                             |
+| **`w`**  | Open file for **write only**. Erases file content (if file exists) or creates a new file.                      |
+| **`w+`** | Open file for **read and write**. Erases content (if file exists) or creates a new file.                       |
+| **`a`**  | Open file for **write only**. Pointer at the **end** of the file. Creates file if it does not exist.           |
+| **`a+`** | Open file for **read and write**. Pointer at the **end** of the file. Creates file if it does not exist.       |
+| **`x`**  | Create and open file for **write only**. Returns `FALSE` and error if file already exists.                     |
+| **`x+`** | Create and open file for **read and write**. Returns `FALSE` and error if file already exists.                 |
+| **`c`**  | Open file for **write only**. Creates the file if it doesn’t exist. Doesn’t truncate (clear) existing content. |
+| **`c+`** | Open file for **read and write**. Creates file if it doesn’t exist. Doesn’t truncate existing content.         |
+
+
+ANSWER : 72 
+
+<?php
+// Start session
+session_start();
+
+// (i) Register session variables (replacement for session_register)
+$_SESSION['username'] = "Jenitha";
+$_SESSION['role'] = "Student";
+
+echo "<h3>Session Variables Registered:</h3>";
+print_r($_SESSION);
+
+// (ii) Unset all session variables
+session_unset();
+echo "<h3>After session_unset():</h3>";
+print_r($_SESSION);
+
+// Re-register again for destroy demo
+$_SESSION['username'] = "Jenitha";
+$_SESSION['role'] = "Student";
+
+// (iii) Destroy the session
+session_destroy();
+
+echo "<h3>Session destroyed.</h3>";
+?>
+
+OUTPUT : 
+
+Session Variables Registered:
+Array ( [username] => Jenitha [role] => Student )
+
+After session_unset():
+Array ( )
+
+Session destroyed.
+
+ANSWER : 73
+
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_FILES['file'])) {
+        $fileName = $_FILES['file']['name'];
+        $fileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+        // Check if uploaded file is jpg or png
+        if ($fileType == "jpg" || $fileType == "jpeg" || $fileType == "png") {
+            echo "<h3>✅ File uploaded successfully: $fileName</h3>";
+        } else {
+            echo "<h3 style='color:red;'>❌ Error: Only JPG or PNG files are allowed.</h3>";
+        }
+    }
+}
+?>
+
+<!-- HTML Form -->
+<form method="post" enctype="multipart/form-data">
+    <label>Select a file to upload (JPG/PNG only):</label><br>
+    <input type="file" name="file" required>
+    <input type="submit" value="Upload">
+</form>
+
+OUTPUT : 
+
+If you upload photo.jpg →
+✅ File uploaded successfully: photo.jpg
+
+If you upload doc.pdf →
+❌ Error: Only JPG or PNG files are allowed.
+
+ANSWER : 74
+
+<?php
+// Writing to file
+$file = fopen("data.txt", "w");
+fwrite($file, "PHP is awesome!\n");
+fwrite($file, "File handling is powerful.\n");
+fclose($file);
+
+// Reading from file
+$file = fopen("data.txt", "r");
+echo "<h3>File Content:</h3>";
+while(!feof($file)) {   // feof = end of file
+    echo fgets($file) . "<br>";
+}
+fclose($file);
+?>
+
+OUTPUT : 
+
+File Content:
+PHP is awesome!
+File handling is powerful.
+
+
+ANSWER : 75
+
+<?php
+function appendLineToFile($filename, $newLine) {
+    // Add a newline character to the content
+    $newLineWithBreak = $newLine . PHP_EOL;
+
+    // Append the new line to the file
+    if (file_put_contents($filename, $newLineWithBreak, FILE_APPEND)) {
+        echo "New line appended successfully to '$filename'.";
+    } else {
+        echo "Error: Could not write to file '$filename'.";
+    }
+}
+
+// Example usage
+$filename = "example.txt";
+$newLine = "This is a new line added to the file.";
+
+// Call the function
+appendLineToFile($filename, $newLine);
+?>
+
+
+OUTPUT : 
+
+New line appended successfully to 'example.txt'.
+
+
+ANSWER : 76
+
+<?php
+// User's birthday (Month-Day format)
+$birthdayMonthDay = "08-25";  // Example: August 25
+
+// Get current date
+$today = new DateTime();
+
+// Get birthday for this year
+$birthday = new DateTime(date("Y") . "-" . $birthdayMonthDay);
+
+// If birthday already passed this year, use next year
+if ($birthday < $today) {
+    $birthday->modify("+1 year");
+}
+
+// Calculate difference
+$interval = $today->diff($birthday);
+
+echo "Today: " . $today->format("Y-m-d") . "<br>";
+echo "Next Birthday: " . $birthday->format("Y-m-d") . "<br>";
+echo "Days until birthday: " . $interval->days;
+?>
+
+OUTPUT : 
+
+Today: 2025-08-18
+Next Birthday: 2025-08-25
+Days until birthday: 7
+
+ANSWER: 77
+
+1. Host/Domain Functions
+
+These functions provide information about hostnames and domains.
+
+Function	Description	Example
+gethostbyname()	Returns the IPv4 address for a hostname	gethostbyname("example.com") → "93.184.216.34"
+gethostbynamel()	Returns all IP addresses for a hostname as an array	gethostbynamel("example.com") → ["93.184.216.34"]
+gethostbyaddr()	Returns the hostname for an IP address	gethostbyaddr("8.8.8.8") → "dns.google"
+dns_check_record() / checkdnsrr()	Checks DNS records for a domain	checkdnsrr("example.com", "MX") → true/false
+🔹 2. IP Address Functions
+
+These functions handle validation or conversion of IP addresses.
+
+Function	Description	Example
+ip2long()	Converts IPv4 address to a long integer	ip2long("127.0.0.1") → 2130706433
+long2ip()	Converts long integer back to IPv4 address	long2ip(2130706433) → "127.0.0.1"
+inet_pton()	Converts IP (IPv4/IPv6) to packed format	inet_pton("127.0.0.1")
+inet_ntop()	Converts packed format back to human-readable IP	inet_ntop($packed)
+filter_var($ip, FILTER_VALIDATE_IP)	Validates if a string is a valid IP	filter_var("192.168.1.1", FILTER_VALIDATE_IP)
+🔹 3. Client/Server Network Information
+
+Functions to retrieve information about the server or client.
+
+Function	Description	Example
+$_SERVER['REMOTE_ADDR']	Client IP address	"192.168.1.5"
+$_SERVER['SERVER_ADDR']	Server IP address	"127.0.0.1"
+$_SERVER['HTTP_HOST']	Current domain name	"localhost"
+$_SERVER['SERVER_NAME']	Server host name	"localhost"
+🔹 4. Socket Functions
+
+Used for low-level network communication.
+
+Function	Description
+socket_create()	Creates a socket
+socket_connect()	Connects to a remote socket
+socket_bind()	Binds a socket to a local address and port
+socket_listen()	Listens for incoming connections
+socket_accept()	Accepts an incoming connection
+socket_read() / socket_write()	Reads from/writes to a socket 
+
+ANSWER : 78
+
+<?php
+// Step 1: Set a cookie (expires in 1 hour)
+setcookie("user", "Jenitha", time() + 3600, "/");
+
+// Step 2: Read the cookie
+if(isset($_COOKIE["user"])) {
+    echo "Cookie 'user' is set. Value: " . $_COOKIE["user"];
+} else {
+    echo "Cookie 'user' is not set.";
+}
+?>
+
+OUTPUT : 
+
+Cookie 'user' is set. Value: Jenitha
+
+
+ANSWER : 79 
+
+<?php
+// File names
+$file1 = "file1.txt";
+$file2 = "file2.txt";
+$destinationFile = "combined.txt";
+
+// Step 1: Read content from first file
+$content1 = file_get_contents($file1);
+
+// Step 2: Read content from second file
+$content2 = file_get_contents($file2);
+
+// Step 3: Combine the contents
+$combinedContent = $content1 . PHP_EOL . $content2;
+
+// Step 4: Write combined content into destination file
+if(file_put_contents($destinationFile, $combinedContent)) {
+    echo "Files appended successfully into '$destinationFile'.";
+} else {
+    echo "Error: Could not write to '$destinationFile'.";
+}
+?>
+
+
+ANSWER : 80
+
+<?php
+// Set a test cookie
+// Parameters: name, value, expiration time (1 hour from now), path
+setcookie("test_cookie", "This is a test", time() + 3600, "/");
+
+// Check if cookie is set
+if(isset($_COOKIE["test_cookie"])) {
+    echo "Test cookie is set. Value: " . $_COOKIE["test_cookie"];
+} else {
+    echo "Test cookie has not been set yet.";
+}
+?>
+
+OUTPUT : 
+
+Test cookie is set. Value: This is a test
+
+ANSWER : 81
+
+<?php
+session_start();
+
+// Hardcoded credentials
+$admin_user = "admin";
+$admin_pass = "admin123";
+
+// Handle Logout
+if (isset($_GET['action']) && $_GET['action'] === 'logout') {
+    session_unset();
+    session_destroy();
+    header("Location: admin.php");
+    exit();
+}
+
+// Handle Login
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+    if ($username === $admin_user && $password === $admin_pass) {
+        $_SESSION["admin_logged_in"] = true;
+        $_SESSION["admin_user"] = $username;
+        header("Location: admin.php");
+        exit();
+    } else {
+        $error = "Invalid username or password!";
+    }
+}
+
+// If admin is logged in, show dashboard
+if (isset($_SESSION["admin_logged_in"]) && $_SESSION["admin_logged_in"] === true) {
+    echo "<h2>Welcome, " . $_SESSION["admin_user"] . "!</h2>";
+    echo "<p>You are logged in as Admin.</p>";
+    echo '<a href="admin.php?action=logout">Logout</a>';
+} else {
+    // Show login form
+    ?>
+    <h2>Admin Login</h2>
+    <form method="post" action="">
+        Username: <input type="text" name="username" required><br><br>
+        Password: <input type="password" name="password" required><br><br>
+        <input type="submit" value="Login">
+    </form>
+    <?php
+    if(isset($error)){
+        echo "<p style='color:red;'>$error</p>";
+    }
+}
+?>
+
+
+ANSWER : 82
+
+<?php
+ob_start();
+
+// Basic cookie
+setcookie("simple_cookie", "Hello World", time() + 3600);
+
+// Cookie with path
+setcookie("path_cookie", "Path Example", time() + 3600, "/test/");
+
+// Cookie with domain
+setcookie("domain_cookie", "Domain Example", time() + 3600, "/", ".example.com");
+
+// Secure cookie
+setcookie("secure_cookie", "Secure Example", time() + 3600, "/", "", true);
+
+// HttpOnly cookie
+setcookie("httponly_cookie", "HttpOnly Example", time() + 3600, "/", "", false, true);
+
+// SameSite cookie (PHP 7.3+)
+setcookie("samesite_cookie", "SameSite Example", [
+    'expires' => time() + 3600,
+    'path' => '/',
+    'domain' => '',
+    'secure' => false,
+    'httponly' => true,
+    'samesite' => 'Strict'
+]);
+
+echo "<h3>Cookies have been set!</h3>";
+echo "<h4>Currently available cookies:</h4>";
+echo "<pre>";
+print_r($_COOKIE);
+echo "</pre>";
+
+ob_end_flush();
+?>
+
+
+OUTPUT : 
+
+Cookies have been set!
+
+Currently available cookies:
+Array
+(
+    // Usually empty on first load because cookies become available on the next request
+)
+
+
+ANSWER : 83
+
+<?php
+$result = "";
+$domain = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST["email"];
+
+    // Validate email
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $result = "✅ Valid Email";
+
+        // Extract domain
+        $parts = explode("@", $email);
+        $domain = $parts[1];
+    } else {
+        $result = "❌ Invalid Email";
+    }
+}
+?>
+
+<h2>Email Validation Form</h2>
+<form method="post">
+    Enter Email: <input type="text" name="email" required>
+    <input type="submit" value="Validate">
+</form>
+
+<?php
+if (!empty($result)) {
+    echo "<h3>Result: $result</h3>";
+    if (!empty($domain)) {
+        echo "<h4>Domain Name: $domain</h4>";
+    }
+}
+?>
+
+OUTPUT : 
+
+Result: ✅ Valid Email
+Domain Name: example.com
+
+
+ANSWER : 84
+
+<?php
+// Start the session
+session_start();
+
+// Step 1: Set session values
+$_SESSION['username'] = "Jenitha";
+$_SESSION['role'] = "Admin";
+$_SESSION['email'] = "jenitha@example.com";
+
+// Display current session data
+echo "<h3>Current Session Data:</h3>";
+echo "<pre>";
+print_r($_SESSION);
+echo "</pre>";
+
+// Step 2: Remove a specific session variable
+unset($_SESSION['email']);
+echo "<h3>After unsetting 'email':</h3>";
+echo "<pre>";
+print_r($_SESSION);
+echo "</pre>";
+
+// Step 3: Destroy the entire session
+session_destroy();
+echo "<h3>After destroying the session:</h3>";
+echo "<pre>";
+print_r($_SESSION); // This will still show data in this script until page reload
+echo "</pre>";
+?>
+
+OUTPUT : 
+
+Current Session Data:
+Array
+(
+    [username] => Jenitha
+    [role] => Admin
+    [email] => jenitha@example.com
+)
+
+After unsetting 'email':
+Array
+(
+    [username] => Jenitha
+    [role] => Admin
+)
+
+After destroying the session:
+Array
+(
+    [username] => Jenitha
+    [role] => Admin
+)
+
+ANSWER : 85
+
+Steps to Get File Name from Path in PHP
+1️⃣ Using basename() Function
+
+The simplest way to get the file name from a path.
+
+$path = "/var/www/html/example/file.txt";
+$filename = basename($path);
+
+echo $filename; // Output: file.txt
+
+
+Optional: You can also remove the file extension:
+
+$filename_without_ext = basename($path, ".txt");
+echo $filename_without_ext; // Output: file
+
+2️⃣ Using pathinfo() Function
+
+Provides more detailed information about the path.
+
+$path = "/var/www/html/example/file.txt";
+$file_info = pathinfo($path);
+
+echo "File Name: " . $file_info['basename'] . "<br>";
+echo "File Name without Extension: " . $file_info['filename'] . "<br>";
+echo "Extension: " . $file_info['extension'] . "<br>";
+
+
+Output:
+
+File Name: file.txt
+File Name without Extension: file
+Extension: txt
+
+
+ANSWER : 86
+
+<?php
+$filename = "example.txt";
+
+// 1. Create or open file for writing
+$file = fopen($filename, "w") or die("Unable to open file!");
+
+// 2. Write data to the file
+fwrite($file, "Hello, PHP File Handling!\n");
+fwrite($file, "This is a second line.\n");
+
+// 3. Close the file
+fclose($file);
+
+// 4. Read entire file using fread
+$file = fopen($filename, "r") or die("Unable to open file!");
+$content = fread($file, filesize($filename));
+fclose($file);
+echo "<h3>Content of the file (using fread):</h3>";
+echo "<pre>$content</pre>";
+
+// 5. Read file line by line using fgets
+$file = fopen($filename, "r");
+echo "<h3>Reading line by line (using fgets):</h3>";
+while(!feof($file)) {
+    $line = fgets($file);
+    if ($line) echo $line . "<br>";
+}
+fclose($file);
+
+// 6. Append data to file using file_put_contents
+file_put_contents($filename, "Appending a new line using file_put_contents.\n", FILE_APPEND);
+
+// 7. Read file using file_get_contents
+echo "<h3>File content after appending:</h3>";
+echo "<pre>" . file_get_contents($filename) . "</pre>";
+
+// 8. Delete the file
+// unlink($filename); // Uncomment to delete the file
+?>
+
+
+OUTPUT : 
+
+Output after running above code:
+
+Content of the file (using fread):
+
+Hello, PHP File Handling!
+This is a second line.
+
+
+Reading line by line (using fgets):
+
+Hello, PHP File Handling!
+This is a second line.
+
+
+File content after appending:
+
+Hello, PHP File Handling!
+This is a second line.
+Appending a new line using file_put_contents.
+
+ANSWER : 87
+
+<?php
+session_start();
+
+// Hardcoded admin credentials
+$admin_user = "admin";
+$admin_pass = "admin123";
+
+// Handle logout
+if (isset($_GET['action']) && $_GET['action'] === 'logout') {
+    session_unset();
+    session_destroy();
+    header("Location: admin.php");
+    exit();
+}
+
+// Handle login form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+    if ($username === $admin_user && $password === $admin_pass) {
+        $_SESSION["admin_logged_in"] = true;
+        $_SESSION["admin_user"] = $username;
+        header("Location: admin.php");
+        exit();
+    } else {
+        $error = "Invalid username or password!";
+    }
+}
+
+// If logged in, show dashboard
+if (isset($_SESSION["admin_logged_in"]) && $_SESSION["admin_logged_in"] === true) {
+    echo "<h2>Welcome, " . $_SESSION["admin_user"] . "!</h2>";
+    echo "<p>You are logged in as Admin.</p>";
+    echo '<a href="admin.php?action=logout">Logout</a>';
+} else {
+    // Show login form
+    ?>
+    <h2>Admin Login</h2>
+    <form method="post">
+        Username: <input type="text" name="username" required><br><br>
+        Password: <input type="password" name="password" required><br><br>
+        <input type="submit" value="Login">
+    </form>
+    <?php
+    if(isset($error)){
+        echo "<p style='color:red;'>$error</p>";
+    }
+}
+?>
+
+OUTPUT : 
+
+Admin Login
+
+Username: [__________]
+Password: [__________]
+[Login Button]
+
+ANSWER : 88
+
+<?php
+// Set your birthday (month and day)
+$birthday_month = 12; // December
+$birthday_day = 25;   // 25th
+
+// Get current date
+$today = new DateTime();
+
+// Create birthday date for this year
+$birthday = new DateTime($today->format('Y') . "-$birthday_month-$birthday_day");
+
+// If birthday already passed this year, set for next year
+if ($birthday < $today) {
+    $birthday->modify('+1 year');
+}
+
+// Calculate difference
+$interval = $today->diff($birthday);
+$days_remaining = $interval->days;
+
+// Display result
+echo "<h2>Birthday Countdown</h2>";
+echo "Today: " . $today->format('Y-m-d') . "<br>";
+echo "Next Birthday: " . $birthday->format('Y-m-d') . "<br>";
+echo "<strong>Days Remaining: $days_remaining days</strong>";
+?>
+
+OUTPUT : 
+
+Birthday Countdown
+Today: 2025-08-18
+Next Birthday: 2025-12-25
+Days Remaining: 129 days
+
+
+ANSWER : 89
+
+<?php
+$filename = "example.txt";
+
+// Check if file exists
+if(file_exists($filename)) {
+
+    // Open the file in read mode
+    $file = fopen($filename, "r") or die("Unable to open file!");
+
+    echo "<h3>Reading file line by line using fgets():</h3>";
+    // Read file line by line until end-of-file
+    while(!feof($file)) {
+        $line = fgets($file);
+        if($line) {
+            echo $line . "<br>";
+        }
+    }
+
+    // Close the file
+    fclose($file);
+
+    // Alternatively, read the entire file at once using fread
+    $file = fopen($filename, "r") or die("Unable to open file!");
+    $content = fread($file, filesize($filename));
+    fclose($file);
+
+    echo "<h3>Reading entire file using fread():</h3>";
+    echo "<pre>$content</pre>";
+
+} else {
+    echo "File '$filename' does not exist.";
+}
+?>
+
+
+OUTPUT :
+
+Reading file line by line using fgets():
+Hello, PHP!
+This is a sample file.
+File operations are easy.
+
+Reading entire file using fread():
+Hello, PHP!
+This is a sample file.
+File operations are easy.
+
+
+ANSWER : 90
+
+<?php
+$filename = "sample.txt";
+
+// Check if file exists
+if(file_exists($filename)) {
+
+    // Open the file in read mode
+    $file = fopen($filename, "r") or die("Unable to open file!");
+
+    // Get the size of the file
+    $filesize = filesize($filename);
+
+    // Read entire file content
+    $content = fread($file, $filesize);
+
+    // Close the file
+    fclose($file);
+
+    // Display file content
+    echo "<h3>Contents of '$filename':</h3>";
+    echo "<pre>$content</pre>";
+
+} else {
+    echo "File '$filename' does not exist.";
+}
+?>
+
+
+OUTPUT : 
+
+Contents of 'sample.txt':
+Hello, PHP!
+Welcome to file handling.
+
+
+ANSWER : 91
+
+<?php
+// Start the session
+session_start();
+
+// Step 1: Set session values if not already set
+if(!isset($_SESSION['username'])) {
+    $_SESSION['username'] = "Jenitha";
+    $_SESSION['role'] = "Admin";
+    $_SESSION['login_time'] = date("Y-m-d H:i:s");
+    echo "<h3>Session has been created and values are set!</h3>";
+} else {
+    echo "<h3>Session already exists.</h3>";
+}
+
+// Step 2: Display current session data
+echo "<h4>Current Session Data:</h4>";
+echo "<pre>";
+print_r($_SESSION);
+echo "</pre>";
+
+// Step 3: Update a session variable
+$_SESSION['role'] = "Super Admin";
+echo "<h4>Session data after updating 'role':</h4>";
+echo "<pre>";
+print_r($_SESSION);
+echo "</pre>";
+
+// Step 4: Remove a specific session variable
+unset($_SESSION['login_time']);
+echo "<h4>Session data after removing 'login_time':</h4>";
+echo "<pre>";
+print_r($_SESSION);
+echo "</pre>";
+
+// Step 5: Destroy the session
+if(isset($_GET['destroy'])) {
+    session_destroy();
+    echo "<h3>Session destroyed. Reload the page to see effect.</h3>";
+}
+?>
+
+<!-- Link to destroy session -->
+<p><a href="?destroy=1">Click here to destroy the session</a></p>
+
+OUTPUT : 
+
+Session destroyed. Reload the page to see effect.
+
+ANSWER : 92
+<?php
+// Check if the "visit_count" cookie exists
+if (isset($_COOKIE['visit_count'])) {
+    // Increment the count
+    $visit_count = $_COOKIE['visit_count'] + 1;
+} else {
+    // First visit
+    $visit_count = 1;
+}
+
+// Set/update the cookie to expire in 30 days
+setcookie('visit_count', $visit_count, time() + (30 * 24 * 60 * 60));
+
+// Display the visit count
+echo "<h2>Welcome!</h2>";
+echo "<p>You have visited this page <strong>$visit_count</strong> times.</p>";
+?>
+
+OUTPUT : 
+
+Welcome!
+You have visited this page 3 times.
+
+
+ANSWER : 94
+| Mode   | Description                                                                                     | Example Use                                 |
+| ------ | ----------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `"r"`  | Open for **reading only**. File must exist. Pointer at start of file.                           | Reading a text file.                        |
+| `"r+"` | Open for **reading and writing**. File must exist. Pointer at start of file.                    | Updating content at beginning.              |
+| `"w"`  | Open for **writing only**. **Truncates file to zero length**. Creates file if it doesn’t exist. | Overwriting a file completely.              |
+| `"w+"` | Open for **reading and writing**. Truncates file if exists. Creates file if not.                | Reading and rewriting a file from scratch.  |
+| `"a"`  | Open for **writing only**. Pointer at **end of file**. Creates file if not exists.              | Appending new data to file.                 |
+| `"a+"` | Open for **reading and writing**. Pointer at end. Creates file if not exists.                   | Reading file and appending data.            |
+| `"x"`  | Create **new file for writing only**. Fails if file exists.                                     | Creating a file safely without overwriting. |
+| `"x+"` | Create new file for **reading and writing**. Fails if file exists.                              | Safely create and read/write new file.      |
+| `"b"`  | Binary mode (add `"b"` to other modes, e.g., `"rb"`)                                            | Useful for images, PDFs, or binary files.   |
+| `"t"`  | Text mode (default in Windows)                                                                  | Mainly for Windows text files.              |
+
+
+
+ANSWER : 95
+
+PHP sessions allow a website to store user-specific data on the server, enabling persistent state across multiple pages in an otherwise stateless HTTP environment. By starting a session with session_start(), data can be stored in $_SESSION variables, retrieved, updated, or destroyed as needed. A common application is a shopping cart, where items, quantities, and selections are stored in the session so that as a user browses products across different pages, their cart remains consistent. For example, when a user adds a product, it is stored in $_SESSION['cart']; this data can be updated or displayed on any page until the session ends or the user checks out, ensuring a secure, persistent, and user-specific cart experience without relying solely on cookies.
+
+ANSWER : 96 
+<?php
+// Start the session
+session_start();
+
+// Register a session variable
+$_SESSION['username'] = "Jenitha";
+
+// Accessing the session variable
+echo "Welcome, " . $_SESSION['username'];
+?>
+
+
+ANSWER : 97
+
+| Function                  | Effect                                             |
+| ------------------------- | -------------------------------------------------- |
+| `session_start()`         | Begins or resumes a session; must be first.        |
+| `session_destroy()`       | Deletes all session data on the server.            |
+| `session_unset()`         | Clears session variables but keeps session active. |
+| `session_id()`            | Get or set session ID.                             |
+| `session_name()`          | Get or set session name.                           |
+| `session_write_close()`   | Saves session and unlocks session file.            |
+| `session_save_path()`     | Get or set the path for session storage.           |
+| `session_regenerate_id()` | Creates new session ID to prevent fixation.        |
+
+
+ANSWER: 98
+
+<?php
+session_start();
+
+// Dummy admin credentials
+$admin_user = "admin";
+$admin_pass = "12345";
+
+// Handle logout
+if (isset($_GET['action']) && $_GET['action'] == "logout") {
+    session_unset();
+    session_destroy();
+    header("Location: ".$_SERVER['PHP_SELF']);
+    exit();
+}
+
+// Handle login
+$message = "";
+if (isset($_POST['login'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    if ($username === $admin_user && $password === $admin_pass) {
+        $_SESSION['admin_logged_in'] = true;
+        $_SESSION['admin_user'] = $username;
+    } else {
+        $message = "Invalid username or password!";
+    }
+}
+
+// If admin is logged in, show dashboard
+if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true):
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h2>Welcome, <?php echo $_SESSION['admin_user']; ?>!</h2>
+    <p>This is the admin dashboard.</p>
+    <a href="?action=logout">Logout</a>
+</body>
+</html>
+
+<?php else: // Show login form ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+</head>
+<body>
+    <h2>Admin Login</h2>
+    <?php if($message) echo "<p style='color:red;'>$message</p>"; ?>
+    <form methFirst Visit:
+Displays the login form:
+
+Admin Login
+Username: [         ]
+Password: [         ]
+[Login]
+
+
+After Correct Login (Username: admin, Password: 12345):
+Displays dashboard:
+
+Welcome, admin!
+This is the admin dashboard.
+[Logout]
+
+
+Click Logout:
+Session ends, and the login form is shown again.od="post">
+
+OUTPUT : 
+        <label>Username:</label>
+        <input type="text" name="username" required><br><br>
+
+        <label>Password:</label>
+        <input type="password" name="password" required><br><br>
+
+        <input type="submit" name="login" value="Login">
+    </form>
+</body>
+</html>
+<?php endif; ?>
+
+ANSWER : 99
+
+<?php
+// (a) Initiate session
+session_start();
+
+// (b) Check for existing session entry
+if(!isset($_SESSION['visit_count'])) {
+    $_SESSION['visit_count'] = 0; // New session
+}
+
+// (c) Increment page visit counter
+$_SESSION['visit_count']++;
+
+// (d) Store counter back in session (already updated in $_SESSION)
+
+// Handle file upload (f)
+$upload_message = "";
+if(isset($_POST['upload'])) {
+    $target_dir = "uploads/";
+    if(!is_dir($target_dir)) {
+        mkdir($target_dir, 0777, true); // Create uploads folder if not exists
+    }
+
+    $target_file = $target_dir . basename($_FILES["file"]["name"]);
+
+    if(file_exists($target_file)) {
+        $upload_message = "Error: File already exists!";
+    } else {
+        if(move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
+            $upload_message = "File uploaded successfully!";
+        } else {
+            $upload_message = "Error: Failed to upload file.";
+        }
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Session & File Upload Example</title>
+</head>
+<body>
+    <h2>Page Visit Counter</h2>
+    <p>You have visited this page <strong><?php echo $_SESSION['visit_count']; ?></strong> times.</p>
+
+    <!-- (e) Link back to this page with session ID -->
+    <p><a href="<?php echo $_SERVER['PHP_SELF'] . "?". session_name() . "=" . session_id(); ?>">Refresh Page</a></p>
+
+    <h2>File Upload</h2>
+    <?php if($upload_message) echo "<p>$upload_message</p>"; ?>
+    <form method="post" enctype="multipart/form-data">
+        Select file to upload:
+        <input type="file" name="file" required><br><br>
+        <input type="submit" name="upload" value="Upload">
+    </form>
+
+    <h3>Uploaded Files:</h3>
+    <ul>
+        <?php
+        if(is_dir("uploads")) {
+            $files = scandir("uploads");
+            foreach($files as $file) {
+                if($file != "." && $file != "..") {
+                    echo "<li>$file</li>";
+                }
+            }
+
+
+OUTPUT : 
+
+
+Error: File already exists!
+Uploaded Files:
+- example.txt
+
+        }
+        ?>
+    </ul>
+</body>
+</html>
+
+
+
+ANSWER : 100
+
+<?php
+$upload_message = "";
+
+// Check if form is submitted
+if(isset($_POST['upload'])) {
+    $target_dir = "uploads/";
+
+    // Create uploads folder if it doesn't exist
+    if(!is_dir($target_dir)) {
+        mkdir($target_dir, 0777, true);
+    }
+
+    $target_file = $target_dir . basename($_FILES["file"]["name"]);
+
+    // Check if file already exists
+    if(file_exists($target_file)) {
+        $upload_message = "Error: The file '" . basename($_FILES["file"]["name"]) . "' already exists!";
+    } else {
+        // Move uploaded file to target directory
+        if(move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
+            $upload_message = "File uploaded successfully!";
+        } else {
+            $upload_message = "Error: Failed to upload file.";
+        }
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload Restriction</title>
+</head>
+<body>
+    <h2>Upload a File</h2>
+
+    <?php if($upload_message) echo "<p>$upload_message</p>"; ?>
+
+    <form method="post" enctype="multipart/form-data">
+        Select file to upload:
+        <input type="file" name="file" required><br><br>
+        <input type="submit" name="upload" value="Upload">
+    </form>
+
+    <h3>Uploaded Files:</h3>
+    <ul>
+        <?php
+        if(is_dir($target_dir)) {
+            $files = scandir($target_dir);
+            foreach($files as $file) {
+                if($file != "." && $file != "..") {
+                    echo "<li>$file</li>";
+                }
+            }
+        }
+        ?>
+    </ul>
+</body>
+</html>
+
+
+OUTPUT : 
+
+File uploaded successfully!
+Uploaded Files:
+- example.txt
+
+
+ANSWER : 101
+
+<?php
+// Assume a cookie named "user" was set previously
+if(isset($_COOKIE['user'])) {
+    $username = $_COOKIE['user'];
+    echo "Welcome back, " . $username . "!";
+} else {
+    echo "Hello, guest! Cookie not found.";
+}
+?>
+
+
+ANSWER : 102
+
+<?php
+// Start a session
+session_start();
+
+// Check if session variables exist
+if (!isset($_SESSION['visit_count'])) {
+    $_SESSION['visit_count'] = 0; // Initialize visit count
+    $_SESSION['username'] = "Jenitha"; // Example session variable
+}
+
+// Increment visit count
+$_SESSION['visit_count']++;
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PHP Session Example</title>
+</head>
+<body>
+    <h2>Welcome, <?php echo $_SESSION['username']; ?>!</h2>
+    <p>You have visited this page <strong><?php echo $_SESSION['visit_count']; ?></strong> times.</p>
+
+    <p><a href="logout.php">Logout</a></p>
+</body>
+</html>
+
+OUTPUT : 
+
+Output:
+
+First visit:
+
+Welcome, Jenitha!
+You have visited this page 1 times.
+
+
+Refresh the page:
+
+Welcome, Jenitha!
+You have visited this page 2 times.
+
+ANSWER : 103
+
+<?php
+// Start the session
+session_start();
+
+// Check if the pageview variable exists
+if(isset($_SESSION['pageview'])) {
+    // If it exists, increment it
+    $_SESSION['pageview']++;
+} else {
+    // If not, initialize it
+    $_SESSION['pageview'] = 1;
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pageview Counter</title>
+</head>
+<body>
+    <h2>Simple Pageview Counter</h2>
+    <p>You have viewed this page <strong><?php echo $_SESSION['pageview']; ?></strong> times in this session.</p>
+</body>
+</html>
+
+
+OUTPUT : 
+First visit:
+
+You have viewed this page 1 times in this session.
+
+
+Second visit (refresh):
+
+You have viewed this page 2 times in this session.
+
+
+Third visit (refresh):
+
+You have viewed this page 3 times in this session.
+
+ANSWER : 104 
+<?php
+// Name of the text file
+$filename = "sample.txt";
+
+// Line number to read (1-based)
+$n = 3; // Change this to any line number
+
+// Check if file exists
+if(!file_exists($filename)) {
+    die("File does not exist.");
+}
+
+// Read the file into an array, each element is a line
+$lines = file($filename, FILE_IGNORE_NEW_LINES);
+
+// Check if nth line exists
+if(isset($lines[$n - 1])) {
+    echo "Line $n: " . $lines[$n - 1];
+} else {
+    echo "no data";
+}
+?>
+
+
+OUTPUT : 
+
+Suppose sample.txt contains:
+
+Line 1 content
+Line 2 content
+Line 3 content
+
+
+$n = 2 → Output:
+
+Line 2: Line 2 content
+
+
+$n = 5 → Output:
+
+no data
+
+
+ANSWER : 105
+
+<?php
+function getWeekStartAndEndDate($week, $year) {
+    // Create a DateTime object for January 1st of the year
+    $date = new DateTime();
+    $date->setISODate($year, $week); // Set the ISO week number and year
+
+    $start = $date->format('Y-m-d'); // Start date (Monday)
+    $date->modify('+6 days');         // Add 6 days to get Sunday
+    $end = $date->format('Y-m-d');    // End date (Sunday)
+
+    return array('start' => $start, 'end' => $end);
+}
+
+// Example usage:
+$weekNumber = 34;
+$year = 2025;
+
+$weekDates = getWeekStartAndEndDate($weekNumber, $year);
+echo "Week $weekNumber of $year starts on " . $weekDates['start'] . " and ends on " . $weekDates['end'];
+?>
+
+
+OUTPUT : 
+
+Week 34 of 2025 starts on 2025-08-18 and ends on 2025-08-24
+
+
+
+
 
 
